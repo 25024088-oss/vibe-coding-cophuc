@@ -4,25 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Phòng Thử Đồ Cổ Phục Việt</title>
-  <!-- Google Font hỗ trợ tiếng Việt thanh lịch -->
+  <!-- Google Font tiếng Việt thanh lịch -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================
-       1. BIẾN MÀU VÀ THIẾT LẬP CƠ BẢN (CSS VARIABLES & RESET)
+       1. THIẾT LẬP MÀU SẮC & GIAO DIỆN CHỦ ĐẠO
        ========================================================== */
     :root {
       --bg-canvas: #FCF8F9;        /* Nền trắng pastel */
-      --bg-surface: #FFFFFF;       /* Trắng tinh */
-      --bg-pink-soft: #FFECEF;     /* Hồng pastel chủ đạo */
-      --bg-info-card: #FFF5F5;     /* Nền thẻ văn hoá */
-      --primary: #E07A5F;          /* Hồng đậm điểm nhấn (Terracotta Rose) */
+      --bg-surface: #FFFFFF;       /* Trắng tinh khiết */
+      --bg-pink-soft: #FFECEF;     /* Hồng pastel điểm tựa */
+      --bg-info-card: #FFF5F5;     /* Nền thẻ văn hoá mềm mại */
+      --primary: #E07A5F;          /* Hồng đậm điểm nhấn */
       --primary-hover: #D0694E;
-      --text-main: #3D3135;        /* Đen nâu cổ điển */
-      --text-muted: #7E6D72;       /* Xám tím nhạt */
-      --border-color: #F1DCE1;     /* Viền nhẹ nhàng */
+      --text-main: #3D3135;        /* Đen nâu cổ phục */
+      --text-muted: #7E6D72;       /* Xám cánh sen nhạt */
+      --border-color: #F1DCE1;     /* Viền thanh mảnh */
       --shadow-soft: 0 10px 30px rgba(224, 122, 95, 0.08);
       --shadow-active: 0 12px 28px rgba(224, 122, 95, 0.22);
       --radius-card: 16px;
@@ -47,11 +47,11 @@
     }
 
     /* ==========================================================
-       2. HEADER & THANH TIẾN TRÌNH (STEPPER)
+       2. HEADER & STEPPER 4 BƯỚC
        ========================================================== */
     header {
-      padding: 24px 20px;
-      background: rgba(252, 248, 249, 0.88);
+      padding: 20px 16px;
+      background: rgba(252, 248, 249, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
@@ -62,7 +62,7 @@
 
     .brand-title {
       font-family: 'Cinzel', serif;
-      font-size: 26px;
+      font-size: 24px;
       color: var(--primary);
       letter-spacing: 2px;
       margin-bottom: 12px;
@@ -72,17 +72,19 @@
     .stepper {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: var(--bg-surface);
-      padding: 6px 18px;
+      padding: 6px 16px;
       border-radius: var(--radius-badge);
       border: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .step-item {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-muted);
@@ -110,13 +112,13 @@
     }
 
     .step-divider {
-      width: 24px;
+      width: 20px;
       height: 1px;
       background: var(--border-color);
     }
 
     /* ==========================================================
-       3. BỐ CỤC CHÍNH (MAIN APP CONTAINER)
+       3. BỐ CỤC KHUNG CHÍNH (LAYOUT)
        ========================================================== */
     .app-container {
       max-width: 1240px;
@@ -125,12 +127,12 @@
       padding: 0 20px;
       flex: 1;
       display: grid;
-      grid-template-columns: 460px 1fr;
+      grid-template-columns: 440px 1fr;
       gap: 32px;
       align-items: start;
     }
 
-    /* CỘT TRÁI: LIVE PREVIEW */
+    /* KHUNG THỬ ĐỒ TRỰC QUAN (PREVIEW COLUMN) */
     .preview-column {
       background: var(--bg-surface);
       border-radius: var(--radius-card);
@@ -165,7 +167,7 @@
 
     .mannequin-frame {
       width: 100%;
-      height: 480px;
+      height: 500px;
       background: radial-gradient(circle, #FFF2F4 0%, #FAECEF 100%);
       border-radius: 12px;
       position: relative;
@@ -175,46 +177,40 @@
       justify-content: center;
     }
 
-    .layer {
+    /* HỆ THỐNG LỚP LAYER HIỂN THỊ (HỖ TRỢ CSS SPRITE VÀ FILTER) */
+    .layer-view {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
     }
 
-    .layer svg {
+    /* Layer Quần có animation chuyển màu bằng Filter */
+    #layer-pants {
+      transition: filter 0.35s ease;
+      z-index: 2;
+    }
+
+    #layer-model {
+      z-index: 1;
+    }
+
+    #layer-costume {
+      z-index: 3;
+      transition: var(--transition);
+    }
+
+    .layer-view svg {
       width: 100%;
       height: 100%;
     }
-  #avatar-container {
-        position: relative;
-        width: 100%;
-        height: 550px;
-        overflow: hidden;
-        background: radial-gradient(circle, #FFF2F4 0%, #FAECEF 100%); /* Thêm dòng này để có nền hồng nhạt đẹp mắt */
-        border-radius: 12px;
-      }
 
-      .avatar-layer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Giữ nguyên tỷ lệ ảnh */
-        pointer-events: none; /* Không cho người dùng thao tác kéo ảnh */
-        transition: opacity 0.3s ease; /* Hiệu ứng mờ nhẹ khi chuyển đổi */
-      }
-
-      #layer-base { z-index: 1; }
-      #layer-pants { z-index: 2; }
-      #layer-outer { z-index: 3; }
-    /* CỘT PHẢI: KHU VỰC ĐIỀU KHIỂN & CHỌN LỰA */
+    /* KHU VỰC ĐIỀU KHIỂN & CHỌN LỰA */
     .control-column {
       background: var(--bg-surface);
       border-radius: var(--radius-card);
@@ -256,7 +252,7 @@
     }
 
     /* ==========================================================
-       4. STYLE THẺ CHỌN (SELECTION CARDS)
+       4. STYLE THẺ CHỌN (CARDS)
        ========================================================== */
     .cards-grid {
       display: grid;
@@ -265,11 +261,15 @@
       margin-bottom: 24px;
     }
 
+    .cards-grid.two-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .select-card {
       background: #FFFFFF;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-card);
-      padding: 16px 14px;
+      padding: 18px 14px;
       text-align: center;
       cursor: pointer;
       position: relative;
@@ -278,7 +278,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      min-height: 170px;
+      min-height: 165px;
     }
 
     .select-card:hover {
@@ -287,7 +287,6 @@
       box-shadow: 0 8px 20px rgba(224, 122, 95, 0.12);
     }
 
-    /* Trạng thái CARD ĐƯỢC CHỌN */
     .select-card.selected {
       border-color: var(--primary);
       background: #FFFDFD;
@@ -295,7 +294,6 @@
       transform: translateY(-5px);
     }
 
-    /* Dấu Check ở góc thẻ */
     .card-check {
       position: absolute;
       top: 10px;
@@ -320,20 +318,25 @@
     }
 
     .card-icon-wrapper {
-      width: 70px;
-      height: 70px;
+      width: 65px;
+      height: 65px;
       background: var(--bg-pink-soft);
       border-radius: 50%;
-      margin: 8px 0 12px;
+      margin: 4px 0 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
+      font-size: 28px;
       transition: var(--transition);
     }
 
-    .select-card.selected .card-icon-wrapper {
-      background: #FCE6E8;
+    /* Mẫu swatch màu quần dạng hình tròn lụa */
+    .pants-color-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid #E6D5D8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .card-title {
@@ -344,12 +347,12 @@
     }
 
     .card-subtitle {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-muted);
     }
 
     /* ==========================================================
-       5. KHUNG THÔNG TIN VĂN HÓA LỊCH SỬ (CULTURE INFO CARD)
+       5. THẺ THÔNG TIN VĂN HÓA LỊCH SỬ
        ========================================================== */
     .culture-card {
       background: var(--bg-info-card);
@@ -357,9 +360,7 @@
       border-left: 4px solid var(--primary);
       padding: 18px 20px;
       margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-      min-height: 110px;
+      min-height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -381,19 +382,16 @@
       font-size: 13.5px;
       line-height: 1.6;
       color: #554449;
-      opacity: 1;
-      transform: translateY(0);
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    /* Hiệu ứng trượt và mờ khi đổi nội dung văn hóa */
     .culture-body.anim-fade-out {
       opacity: 0;
       transform: translateY(6px);
     }
 
     /* ==========================================================
-       6. THANH ĐIỀU HƯỚNG BUTTON (ACTIONS BAR)
+       6. THANH ĐIỀU HƯỚNG BUTTON
        ========================================================== */
     .actions-bar {
       margin-top: auto;
@@ -457,12 +455,12 @@
         position: static;
       }
       .mannequin-frame {
-        height: 380px;
+        height: 420px;
       }
     }
 
     @media (max-width: 600px) {
-      .cards-grid {
+      .cards-grid, .cards-grid.two-cols {
         grid-template-columns: 1fr;
       }
       .control-column {
@@ -473,7 +471,7 @@
 </head>
 <body>
 
-  <!-- HEADER NAVIGATION -->
+  <!-- HEADER STEPPER: 4 BƯỚC -->
   <header>
     <div class="brand-title">Phòng Thử Đồ Cổ Phục</div>
     <div class="stepper">
@@ -484,11 +482,16 @@
       <div class="step-divider"></div>
       <div class="step-item" id="stepIndicator2">
         <span class="step-circle">2</span>
-        <span>Phong Cách</span>
+        <span>Chọn Quần</span>
       </div>
       <div class="step-divider"></div>
       <div class="step-item" id="stepIndicator3">
         <span class="step-circle">3</span>
+        <span>Chọn Áo</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" id="stepIndicator4">
+        <span class="step-circle">4</span>
         <span>Hoa Văn</span>
       </div>
     </div>
@@ -497,26 +500,26 @@
   <!-- CONTAINER CHÍNH -->
   <main class="app-container">
     
-    <!-- CỘT 1: LIVE PREVIEW KHUNG THỬ ĐỒ -->
+    <!-- CỘT 1: KHUNG PREVIEW TRỰC QUAN -->
     <section class="preview-column">
       <div class="preview-header">
         <span>Gương Thử Áo</span>
         <span class="tag-gender" id="previewGenderTag">Nữ Mạng</span>
       </div>
 
-    <div class="mannequin-frame" id="avatar-container">
-        <!-- Lớp 1: Cơ thể gốc (Dưới cùng) -->
-        <img id="layer-base" src="" alt="Base Body" class="avatar-layer">
-        
-        <!-- Lớp 2: Quần -->
-        <img id="layer-pants" src="" alt="Pants" class="avatar-layer">
-        
-        <!-- Lớp 3: Áo Ngoài (Trên cùng) -->
-        <img id="layer-outer" src="" alt="Outer Shirt" class="avatar-layer">
+      <div class="mannequin-frame">
+        <!-- LAYER 1: NGƯỜI MẪU NỀN -->
+        <div class="layer-view" id="layer-model"></div>
+
+        <!-- LAYER 2: LỚP QUẦN (ĐIỀU KHIỂN BẰNG CSS FILTER) -->
+        <div class="layer-view" id="layer-pants"></div>
+
+        <!-- LAYER 3: LỚP ÁO CỔ PHỤC CHỒNG LÊN TRÊN -->
+        <div class="layer-view" id="layer-costume"></div>
       </div>
     </section>
 
-    <!-- CỘT 2: CONTROL PANEL ĐIỀU HƯỚNG TỪNG BƯỚC -->
+    <!-- CỘT 2: CONTROL COLUMN (4 BƯỚC) -->
     <section class="control-column">
       
       <!-- ==================== BƯỚC 1: CHỌN GIỚI TÍNH ==================== -->
@@ -524,18 +527,16 @@
         <h2 class="section-title">Bước 1: Chọn Giới Tính</h2>
         <p class="section-desc">Vui lòng chọn nhân vật để bắt đầu hành trình cổ phục truyền thống.</p>
         
-        <div class="cards-grid" style="grid-template-columns: repeat(2, 1fr);">
-          <!-- Card Nữ -->
+        <div class="cards-grid two-cols">
           <div class="select-card" id="genderCardFemale" onclick="handleSelectGender('nu')">
             <div class="card-check">✓</div>
             <div class="card-icon-wrapper">🌸</div>
             <div>
               <div class="card-title">Nữ Giới</div>
-              <div class="card-subtitle">Thanh thoát, dịu dàng</div>
+              <div class="card-subtitle">Thanh thoát, nhu mì</div>
             </div>
           </div>
           
-          <!-- Card Nam -->
           <div class="select-card" id="genderCardMale" onclick="handleSelectGender('nam')">
             <div class="card-check">✓</div>
             <div class="card-icon-wrapper">🎋</div>
@@ -549,20 +550,48 @@
         <div class="actions-bar">
           <div></div>
           <button class="btn btn-primary" id="btnNextStep1" disabled onclick="goToStep(2)">
-            Tiếp tục đến Bước 2 ➜
+            Tiếp tục đến Chọn Quần ➜
           </button>
         </div>
       </div>
 
-      <!-- ==================== BƯỚC 2: CHỌN PHONG CÁCH CỔ PHỤC ==================== -->
+      <!-- ==================== BƯỚC 2: CHỌN QUẦN ==================== -->
       <div class="step-section" id="step2Container">
-        <h2 class="section-title">Bước 2: Chọn Phong Cách Cổ Phục</h2>
-        <p class="section-desc">Lựa chọn dáng áo đặc trưng thời Nguyễn và cận hiện đại phù hợp cốt cách.</p>
+        <h2 class="section-title">Bước 2: Chọn Quần Lụa</h2>
+        <p class="section-desc">Lựa chọn sắc quần lụa tơ tằm truyền thống phối cùng cổ phục.</p>
 
-        <!-- Dynamic Card Options Grid (Được JS render dựa trên Giới tính) -->
+        <!-- Dynamic Pants Selection Grid -->
+        <div class="cards-grid two-cols" id="pantsCardsGrid"></div>
+
+        <!-- Khung Thông Tin Quần -->
+        <div class="culture-card">
+          <div class="culture-header">
+            <span>✨ Văn hoá mặc quần ngũ thân</span>
+          </div>
+          <div class="culture-body" id="pantsCultureText">
+            Vui lòng chọn màu quần lụa để xem chi tiết phối sắc truyền thống.
+          </div>
+        </div>
+
+        <div class="actions-bar">
+          <button class="btn btn-secondary" onclick="goToStep(1)">
+            ⬅ Quay lại (Giới Tính)
+          </button>
+          <button class="btn btn-primary" id="btnNextStep2" disabled onclick="goToStep(3)">
+            Tiếp tục đến Chọn Áo ➜
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== BƯỚC 3: CHỌN ÁO CỔ PHỤC ==================== -->
+      <div class="step-section" id="step3Container">
+        <h2 class="section-title">Bước 3: Chọn Phong Cách Cổ Phục</h2>
+        <p class="section-desc">Lựa chọn phom dáng áo đặc trưng thời Nguyễn và cận hiện đại phù hợp cốt cách.</p>
+
+        <!-- Dynamic Style Grid theo Giới tính -->
         <div class="cards-grid" id="styleCardsGrid"></div>
 
-        <!-- Khung Thông Tin Văn Hoá Lịch Sử -->
+        <!-- Khung Thông Tin Lịch Sử Áo -->
         <div class="culture-card">
           <div class="culture-header">
             <span>📜 Lịch sử & Ý nghĩa văn hóa</span>
@@ -572,32 +601,35 @@
           </div>
         </div>
 
-        <!-- Thanh điều hướng nút bấm -->
         <div class="actions-bar">
-          <button class="btn btn-secondary" onclick="goToStep(1)">
-            ⬅ Quay lại
+          <button class="btn btn-secondary" onclick="goToStep(2)">
+            ⬅ Quay lại (Chọn Quần)
           </button>
-          <button class="btn btn-primary" id="btnNextStep2" disabled onclick="goToStep(3)">
-            Tiếp theo (Bước 3) ➜
+          <button class="btn btn-primary" id="btnNextStep3" disabled onclick="goToStep(4)">
+            Tiếp tục đến Hoa Văn ➜
           </button>
         </div>
       </div>
 
-      <!-- ==================== BƯỚC 3: MÀN HÌNH CHỜ TIẾP THEO ==================== -->
-      <div class="step-section" id="step3Container">
-        <h2 class="section-title">Bước 3: Chọn Màu Sắc & Hoa Văn</h2>
+      <!-- ==================== BƯỚC 4: HOA VĂN & MÀU SẮC ==================== -->
+      <div class="step-section" id="step4Container">
+        <h2 class="section-title">Bước 4: Chọn Hoa Văn & Màu Sắc</h2>
         <p class="section-desc">Hệ thống đang chuẩn bị hoa văn Bát Bửu, Tứ Thời và sắc tơ dệt...</p>
+        
         <div style="background: var(--bg-pink-soft); padding: 40px; text-align: center; border-radius: 16px; margin: 20px 0;">
-          <div style="font-size: 42px; margin-bottom: 12px;">🧵 ✨</div>
-          <p style="font-weight: 600; color: var(--primary);">Đã lưu thành công phong cách cổ phục của bạn!</p>
-          <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Sẵn sàng tích hợp tiếp module phối hoa văn chi tiết.</p>
+          <div style="font-size: 42px; margin-bottom: 12px;">🧵 ✨ 🪡</div>
+          <p style="font-weight: 700; color: var(--primary); font-size: 16px;">Đã lưu thành công bộ phối của bạn!</p>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 8px;" id="summarySelectedText">
+            Quần và dáng áo đã được đồng bộ lên mô hình gương thử.
+          </p>
         </div>
+
         <div class="actions-bar">
-          <button class="btn btn-secondary" onclick="goToStep(2)">
-            ⬅ Quay lại Bước 2
+          <button class="btn btn-secondary" onclick="goToStep(3)">
+            ⬅ Quay lại (Chọn Áo)
           </button>
-          <button class="btn btn-primary" onclick="alert('Đã hoàn thành demo luồng Bước 2!')">
-            Hoàn tất demo
+          <button class="btn btn-primary" onclick="alert('Đã hoàn thành xuất sắc luồng thử đồ 4 bước!')">
+            Hoàn tất & Xuất ảnh 📷
           </button>
         </div>
       </div>
@@ -606,10 +638,30 @@
   </main>
 
   <!-- ==========================================================
-       8. JAVASCRIPT LOGIC VÀ DỮ LIỆU LỊCH SỬ NỘI DUNG
+       8. JAVASCRIPT LOGIC & CSDL NỘI TRÚ
        ========================================================== -->
   <script>
-    /* DỮ LIỆU TRANG PHỤC VÀ LỊCH SỬ VĂN HOÁ */
+    /* DỮ LIỆU BƯỚC 2: CHỌN QUẦN */
+    const PANTS_DATA = [
+      {
+        id: 'pants_white',
+        name: 'Quần Lụa Trắng',
+        subName: 'Bạch sắc thanh tao',
+        filter: 'none',
+        colorPreview: '#FFFFFF',
+        desc: "Quần lụa trắng là dạng quần phổ biến của người Việt xưa khi mặc cùng Áo Tấc và Áo Ngũ Thân. Sắc trắng ngà của tơ tằm đem lại sự trang nhã, tương phản hài hòa với màu áo rực rỡ bên ngoài."
+      },
+      {
+        id: 'pants_black',
+        name: 'Quần Lụa Đen',
+        subName: 'Huyền sắc trang trọng',
+        filter: 'brightness(0.2)',
+        colorPreview: '#2B2B2B',
+        desc: "Quần lụa lĩnh hoặc lụa nhuộm củ nâu/mặc nưa đen nhánh. Trang phục mang sắc thái tôn nghiêm, đĩnh đạc và kín kẽ, thường được các bậc trưởng thượng và giới nho sinh ưa chuộng."
+      }
+    ];
+
+    /* DỮ LIỆU BƯỚC 3: PHONG CÁCH ÁO */
     const COSTUME_DATA = {
       nu: [
         {
@@ -659,63 +711,71 @@
       ]
     };
 
-    /* STATE QUẢN LÝ ỨNG DỤNG (SPA STATE) */
+    /* STATE QUẢN LÝ TIẾN TRÌNH */
     const userSelection = {
       currentStep: 1,
       gender: null,   // 'nu' | 'nam'
+      pants: null,    // 'pants_white' | 'pants_black'
       style: null     // ID của áo đã chọn
     };
 
-    /* KHỞI TẠO KHI TẢI TRANG */
+    /* KHỞI CHẠY LẦN ĐẦU */
     document.addEventListener('DOMContentLoaded', () => {
-      // Khởi đầu ở Bước 1 Nữ mặc định hoặc chờ chọn
+      renderPantsCards();
       renderStepView();
       updatePreviewMannequin();
+      renderPantsBaseGraphic();
     });
 
-    /* HÀM CHUYỂN BƯỚC SPA */
+    /* HÀM CHUYỂN BƯỚC SPA (XỬ LÝ CẢ 4 BƯỚC) */
     function goToStep(stepNumber) {
       userSelection.currentStep = stepNumber;
       renderStepView();
 
       if (stepNumber === 2) {
-        // Render danh sách 3 áo theo giới tính
-        renderStyleCards();
-        // Cập nhật lại khung lịch sử theo lựa chọn hiện có (nếu có)
-        updateCultureInfoCard();
+        renderPantsCards();
+        updatePantsCultureCard();
       } else if (stepNumber === 3) {
-        console.log("Sang Bước 3: Đã chọn phong cách", userSelection.style);
+        renderStyleCards();
+        updateCultureInfoCard();
+      } else if (stepNumber === 4) {
+        updateStep4Summary();
+        console.log("Sang Bước 4: Lựa chọn hiện tại:", userSelection);
       }
     }
 
-    /* ĐỔI HIỂN THỊ CONTAINER THEO BƯỚC */
+    /* ĐỔI HIỂN THỊ CONTAINER & STEPPER CHO 4 BƯỚC */
     function renderStepView() {
-      // Ẩn tất cả section
-      document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active-step'));
-      // Bật section tương ứng
+      // Ẩn tất cả các container từ 1 đến 4
+      for (let i = 1; i <= 4; i++) {
+        const container = document.getElementById(`step${i}Container`);
+        if (container) container.classList.remove('active-step');
+      }
+
+      // Kích hoạt container hiện tại
       const activeContainer = document.getElementById(`step${userSelection.currentStep}Container`);
       if (activeContainer) activeContainer.classList.add('active-step');
 
-      // Cập nhật thanh stepper ở Header
-      for (let i = 1; i <= 3; i++) {
-        const ind = document.getElementById(`stepIndicator${i}`);
-        if (i <= userSelection.currentStep) {
-          ind.classList.add('active');
-        } else {
-          ind.classList.remove('active');
+      // Cập nhật Stepper trên Header
+      for (let i = 1; i <= 4; i++) {
+        const indicator = document.getElementById(`stepIndicator${i}`);
+        if (indicator) {
+          if (i <= userSelection.currentStep) {
+            indicator.classList.add('active');
+          } else {
+            indicator.classList.remove('active');
+          }
         }
       }
     }
 
-    /* LOGIC BƯỚC 1: CHỌN GIỚI TÍNH */
+    /* ==================== BƯỚC 1: XỬ LÝ CHỌN GIỚI TÍNH ==================== */
     function handleSelectGender(gender) {
       if (userSelection.gender === gender) return;
 
       userSelection.gender = gender;
-      // Reset style khi đổi giới tính
-      userSelection.style = null;
+      userSelection.style = null; // reset áo khi đổi giới tính
 
-      // Cập nhật giao diện Thẻ chọn giới tính
       const cardFemale = document.getElementById('genderCardFemale');
       const cardMale = document.getElementById('genderCardMale');
 
@@ -729,15 +789,90 @@
         document.getElementById('previewGenderTag').textContent = "Nam Mạng";
       }
 
-      // Kích hoạt nút tiếp tục ở bước 1
       document.getElementById('btnNextStep1').removeAttribute('disabled');
-
-      // Cập nhật mô hình người mẫu Live Preview
       updatePreviewMannequin();
+      renderPantsBaseGraphic();
       updateCostumePreview();
     }
 
-    /* LOGIC BƯỚC 2: RENDER ĐỘNG CÁC CARD THEO GIỚI TÍNH */
+    /* ==================== BƯỚC 2: XỬ LÝ CHỌN QUẦN ==================== */
+    function renderPantsCards() {
+      const grid = document.getElementById('pantsCardsGrid');
+      grid.innerHTML = '';
+
+      PANTS_DATA.forEach(pants => {
+        const isSelected = userSelection.pants === pants.id;
+        const card = document.createElement('div');
+        card.className = `select-card ${isSelected ? 'selected' : ''}`;
+        card.id = `card_${pants.id}`;
+        card.onclick = () => handleSelectPants(pants.id);
+
+        card.innerHTML = `
+          <div class="card-check">✓</div>
+          <div class="card-icon-wrapper">
+            <div class="pants-color-circle" style="background-color: ${pants.colorPreview};"></div>
+          </div>
+          <div>
+            <div class="card-title">${pants.name}</div>
+            <div class="card-subtitle">${pants.subName}</div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      const btnNextStep2 = document.getElementById('btnNextStep2');
+      if (userSelection.pants) {
+        btnNextStep2.removeAttribute('disabled');
+      } else {
+        btnNextStep2.setAttribute('disabled', 'true');
+      }
+    }
+
+    function handleSelectPants(pantsId) {
+      userSelection.pants = pantsId;
+
+      // Cập nhật selected card
+      PANTS_DATA.forEach(p => {
+        const card = document.getElementById(`card_${p.id}`);
+        if (card) {
+          if (p.id === pantsId) {
+            card.classList.add('selected');
+          } else {
+            card.classList.remove('selected');
+          }
+        }
+      });
+
+      // HIỆU ỨNG THAY MÀU BẰNG CSS FILTER LÊN #layer-pants
+      const selectedPantsObj = PANTS_DATA.find(p => p.id === pantsId);
+      const layerPants = document.getElementById('layer-pants');
+      if (selectedPantsObj && layerPants) {
+        layerPants.style.filter = selectedPantsObj.filter;
+      }
+
+      updatePantsCultureCard();
+      document.getElementById('btnNextStep2').removeAttribute('disabled');
+    }
+
+    function updatePantsCultureCard() {
+      const infoText = document.getElementById('pantsCultureText');
+      if (!userSelection.pants) {
+        infoText.textContent = "Vui lòng chọn màu quần lụa để xem chi tiết phối sắc truyền thống.";
+        return;
+      }
+
+      const current = PANTS_DATA.find(p => p.id === userSelection.pants);
+      if (current) {
+        infoText.classList.add('anim-fade-out');
+        setTimeout(() => {
+          infoText.textContent = current.desc;
+          infoText.classList.remove('anim-fade-out');
+        }, 160);
+      }
+    }
+
+    /* ==================== BƯỚC 3: XỬ LÝ CHỌN ÁO ==================== */
     function renderStyleCards() {
       const grid = document.getElementById('styleCardsGrid');
       grid.innerHTML = '';
@@ -763,134 +898,128 @@
         grid.appendChild(card);
       });
 
-      // Kiểm soát trạng thái nút "Tiếp theo" ở Bước 2
-      const btnNextStep2 = document.getElementById('btnNextStep2');
+      const btnNextStep3 = document.getElementById('btnNextStep3');
       if (userSelection.style) {
-        btnNextStep2.removeAttribute('disabled');
+        btnNextStep3.removeAttribute('disabled');
       } else {
-        btnNextStep2.setAttribute('disabled', 'true');
+        btnNextStep3.setAttribute('disabled', 'true');
       }
     }
 
-    /* XỬ LÝ CHỌN STYLE CỔ PHỤC */
     function handleSelectStyle(styleId) {
       userSelection.style = styleId;
 
-      // Cập nhật class selected cho card
-      const listStyles = COSTUME_DATA[userSelection.gender];
+      const listStyles = COSTUME_DATA[userSelection.gender] || [];
       listStyles.forEach(item => {
         const el = document.getElementById(`card_${item.id}`);
         if (el) {
-          if (item.id === styleId) {
-            el.classList.add('selected');
-          } else {
-            el.classList.remove('selected');
-          }
+          if (item.id === styleId) el.classList.add('selected');
+          else el.classList.remove('selected');
         }
       });
 
-      // Cập nhật nội dung văn hóa với hiệu ứng Fade/Slide up
       updateCultureInfoCard();
-
-      // Cập nhật lớp áo lên Mannequin
       updateCostumePreview();
-
-      // Bật sáng nút tiếp tục
-      document.getElementById('btnNextStep2').removeAttribute('disabled');
+      document.getElementById('btnNextStep3').removeAttribute('disabled');
     }
 
-    /* HIỆU ỨNG & CẬP NHẬT THẺ THÔNG TIN VĂN HÓA */
     function updateCultureInfoCard() {
-      const infoTextEl = document.getElementById('cultureInfoText');
-      
+      const infoText = document.getElementById('cultureInfoText');
       if (!userSelection.style) {
-        infoTextEl.textContent = "Vui lòng chọn một phong cách áo ở trên để khám phá gốc tích lịch sử và triết lý trang phục cổ nhân.";
+        infoText.textContent = "Vui lòng chọn một phong cách áo ở trên để khám phá gốc tích lịch sử và triết lý trang phục cổ nhân.";
         return;
       }
 
       const list = COSTUME_DATA[userSelection.gender] || [];
-      const currentItem = list.find(x => x.id === userSelection.style);
-
-      if (currentItem) {
-        // Animation trượt mờ
-        infoTextEl.classList.add('anim-fade-out');
+      const current = list.find(x => x.id === userSelection.style);
+      if (current) {
+        infoText.classList.add('anim-fade-out');
         setTimeout(() => {
-          infoTextEl.textContent = currentItem.history;
-          infoTextEl.classList.remove('anim-fade-out');
-        }, 180);
+          infoText.textContent = current.history;
+          infoText.classList.remove('anim-fade-out');
+        }, 160);
       }
+    }
+
+    function updateStep4Summary() {
+      const sumText = document.getElementById('summarySelectedText');
+      const pantsObj = PANTS_DATA.find(p => p.id === userSelection.pants);
+      const list = COSTUME_DATA[userSelection.gender] || [];
+      const styleObj = list.find(s => s.id === userSelection.style);
+
+      const pantsName = pantsObj ? pantsObj.name : "Chưa chọn";
+      const styleName = styleObj ? styleObj.name : "Chưa chọn";
+      const genderName = userSelection.gender === 'nam' ? 'Nam giới' : 'Nữ giới';
+
+      sumText.innerHTML = `Nhân vật: <b>${genderName}</b> | <b>${pantsName}</b> phối cùng <b>${styleName}</b>.`;
     }
 
     /* ==========================================================
-       9. LIVE PREVIEW ENGINE (VẼ SVG NỘI SUY SẮC NÉT)
+       9. LIVE PREVIEW ENGINE & CÁC LỚP LAYER HIỂN THỊ
        ========================================================== */
+    /* VẼ LAYER 1: MANNEQUIN NGƯỜI */
     function updatePreviewMannequin() {
+      const layerModel = document.getElementById('layer-model');
       const isNu = (userSelection.gender === 'nu' || !userSelection.gender);
-      const layerBase = document.getElementById('layer-base');
-      const layerPants = document.getElementById('layer-pants');
 
-      // Đảm bảo element tồn tại trước khi đổi src
-      if (!layerBase || !layerPants) return;
-
-      if (isNu) {
-        // Gọi ảnh nhân vật Nữ
-        layerBase.src = 'female_base.png';
-        layerPants.src = 'female_pants.png';
-      } else {
-        // Gọi ảnh nhân vật Nam
-        layerBase.src = 'male_base.png';
-        layerPants.src = 'male_pants.png';
-      }
+      layerModel.innerHTML = `
+        <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="150" cy="180" r="120" fill="#FFF0F2" opacity="0.6"/>
+          <circle cx="150" cy="95" r="28" fill="#FAD4C0"/>
+          <path d="M142 120H158V142H142Z" fill="#F3C5AF"/>
+          
+          ${isNu 
+            ? `<path d="M120 95C120 70 132 60 150 60C168 60 180 70 180 95C180 98 175 92 150 92C125 92 120 98 120 95Z" fill="#2E2427"/>
+               <ellipse cx="150" cy="78" rx="34" ry="12" fill="#583C43" stroke="#E07A5F" stroke-width="1.5"/>`
+            : `<path d="M122 92C122 68 134 58 150 58C166 58 178 68 178 92Z" fill="#221B1D"/>
+               <path d="M118 78C118 70 132 66 150 66C168 66 182 70 182 78C182 85 168 89 150 89C132 89 118 85 118 78Z" fill="#3D3035" stroke="#BF8A5B" stroke-width="2"/>`
+          }
+          
+          <!-- Thân áo lót / dáng người -->
+          <path d="${isNu ? 'M126 142L95 240H205L174 142H126Z' : 'M120 140L88 240H212L180 140H120Z'}" fill="#EFE5E8"/>
+        </svg>
+      `;
     }
 
-    function updateCostumePreview() {
-      const layerOuter = document.getElementById('layer-outer');
-      
-      if (!layerOuter) return;
+    /* VẼ LAYER 2: QUẦN LỤA TRẮNG GỐC TRÊN #layer-pants (ĐƯỢC ÁP CSS FILTER THAY ĐỔI) */
+    function renderPantsBaseGraphic() {
+      const layerPants = document.getElementById('layer-pants');
+      const isNu = (userSelection.gender === 'nu' || !userSelection.gender);
 
+      // Quần lụa ống rộng truyền thống trắng tinh, filter brightness(0.2) sẽ biến thành đen
+      layerPants.innerHTML = `
+        <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ống Quần Trái -->
+          <path d="${isNu ? 'M102 235L82 436H144L148 245Z' : 'M96 235L76 438H144L147 245Z'}" fill="#FFFFFF" stroke="#E5D9DC" stroke-width="1"/>
+          <!-- Ống Quần Phải -->
+          <path d="${isNu ? 'M198 235L218 436H156L152 245Z' : 'M204 235L224 438H156L153 245Z'}" fill="#FFFFFF" stroke="#E5D9DC" stroke-width="1"/>
+          <!-- Nếp gấp lụa bóng -->
+          <path d="M124 250L112 432" stroke="#F0E8EA" stroke-width="1.8"/>
+          <path d="M176 250L188 432" stroke="#F0E8EA" stroke-width="1.8"/>
+        </svg>
+      `;
+    }
+
+    /* VẼ LAYER 3: ÁO CỔ PHỤC CHỒNG LÊN TRÊN */
+    function updateCostumePreview() {
+      const layerCostume = document.getElementById('layer-costume');
       if (!userSelection.style) {
-        // Nếu chưa chọn áo, ẩn layer áo ngoài đi
-        layerOuter.src = '';
-        layerOuter.style.opacity = '0';
+        layerCostume.innerHTML = '';
         return;
       }
-
-      // Hiện áo lên khi đã chọn
-      layerOuter.style.opacity = '1';
-      const style = userSelection.style;
-
-      // Cập nhật đường dẫn ảnh tùy theo loại áo người dùng click
-      if (style === 'nu_ao_tac') {
-        layerOuter.src = 'female_ao.png';
-      } 
-      else if (style === 'nam_ngu_than') {
-        layerOuter.src = 'male_ao.png';
-      }
-      // Bạn có thể bổ sung các tên file ảnh khác tương ứng với ID áo ở đây
-      else {
-        // Nếu chọn trúng áo chưa có ảnh cắt nền, tạm thời ẩn đi
-        layerOuter.src = '';
-        layerOuter.style.opacity = '0';
-      }
-    }
 
       const style = userSelection.style;
       let costumeSvg = '';
 
-      // Tùy theo loại áo mà sinh ra dáng áo tương ứng
       if (style === 'nu_ao_tac' || style === 'nam_ao_tac') {
-        // Áo Tấc: Tay thụng xòe to rộng, tà áo rủ cung kính
         const colorMain = (style === 'nu_ao_tac') ? '#E88B98' : '#4A6B82';
         const colorBorder = (style === 'nu_ao_tac') ? '#F9D1D6' : '#95AFC0';
         costumeSvg = `
           <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Tay Áo Thụng Rộng Đặc Trưng (Áo Tấc) -->
-            <path d="M126 142L35 245L65 295L120 230V390H180V230L235 295L265 245L174 142H126Z" fill="${colorMain}" opacity="0.94"/>
-            <!-- Tà áo ngũ thân thụng -->
-            <path d="M110 220L75 425H225L190 220H110Z" fill="${colorMain}"/>
-            <!-- Cổ đứng cài khuy bên hữu -->
+            <path d="M126 142L35 245L65 295L120 230V380H180V230L235 295L265 245L174 142H126Z" fill="${colorMain}" opacity="0.95"/>
+            <!-- Tà ngắn để lộ quần lụa ở dưới -->
+            <path d="M110 220L84 380H216L190 220H110Z" fill="${colorMain}"/>
             <path d="M136 140C136 130 164 130 164 140V175H136V140Z" fill="${colorBorder}"/>
-            <!-- Khuy ngọc ngũ thường -->
             <circle cx="150" cy="148" r="3" fill="#FFEAA7"/>
             <circle cx="154" cy="162" r="3" fill="#FFEAA7"/>
             <circle cx="160" cy="178" r="3" fill="#FFEAA7"/>
@@ -900,17 +1029,13 @@
         `;
       } 
       else if (style === 'nu_ngu_than' || style === 'nam_ngu_than') {
-        // Áo Ngũ Thân: Tay chẽn gọn gàng, 5 khuy rõ ràng
         const colorMain = (style === 'nu_ngu_than') ? '#C45A6D' : '#3B5249';
         costumeSvg = `
           <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Tay Áo Chẽn Thon Gọn -->
-            <path d="M126 142L72 260L96 270L124 205V400H176V205L204 270L228 260L174 142H126Z" fill="${colorMain}" opacity="0.95"/>
-            <!-- Tà áo suôn phẳng -->
-            <path d="M114 205L92 425H208L186 205H114Z" fill="${colorMain}"/>
-            <!-- Nẹp cổ áo đứng lập lĩnh -->
+            <path d="M126 142L72 260L96 270L124 205V390H176V205L204 270L228 260L174 142H126Z" fill="${colorMain}" opacity="0.96"/>
+            <!-- Tà ngũ thân chuẩn để hở lai quần -->
+            <path d="M114 205L96 390H204L186 205H114Z" fill="${colorMain}"/>
             <path d="M137 140C137 132 163 132 163 140V172L148 180L137 140Z" fill="#D4AF37"/>
-            <!-- 5 Khuy Ngũ Thường -->
             <circle cx="149" cy="148" r="2.8" fill="#FFF"/>
             <circle cx="152" cy="162" r="2.8" fill="#FFF"/>
             <circle cx="157" cy="177" r="2.8" fill="#FFF"/>
@@ -920,22 +1045,19 @@
         `;
       } 
       else {
-        // Áo Dài Hiện Đại: Ôm dáng, tà bay nhẹ
         const colorMain = (style === 'nu_ao_dai') ? '#E07A5F' : '#2D3A45';
         costumeSvg = `
           <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Tay áo dài thon -->
-            <path d="M128 142L78 280L94 286L126 195V420H174V195L206 286L222 280L172 142H128Z" fill="${colorMain}" opacity="0.96"/>
-            <!-- Dáng tà áo mềm mại cách tân -->
-            <path d="M122 195C108 245 92 340 85 435H215C208 340 192 245 178 195H122Z" fill="${colorMain}"/>
-            <!-- Cổ thuyền hoặc cổ cao mềm -->
+            <path d="M128 142L78 280L94 286L126 195V400H174V195L206 286L222 280L172 142H128Z" fill="${colorMain}" opacity="0.96"/>
+            <!-- Dáng tà áo dài lượn sóng nhẹ để hở gấu quần -->
+            <path d="M122 195C108 245 96 320 92 405H208C204 320 192 245 178 195H122Z" fill="${colorMain}"/>
             <path d="M138 140C138 134 162 134 162 140L150 148L138 140Z" fill="#FFF" opacity="0.6"/>
           </svg>
         `;
       }
 
       layerCostume.innerHTML = costumeSvg;
-    
+    }
   </script>
 </body>
 </html>
